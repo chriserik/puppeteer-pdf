@@ -10,6 +10,7 @@ const puppeteer = require("puppeteer");
 cli
   .version("1.2.0")
   .option("-p, --path <path>", "The file path to save the PDF to.")
+  .option("-e, --executable <path>", "The path of the chromium executable")
   .option(
     "-s, --scale [scale]",
     "Scale of the webpage rendering.",
@@ -103,7 +104,11 @@ cli
     }
   });
 
-  const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
+  const browser = await puppeteer.launch(
+    options.executable
+      ? { executablePath: options.executable, args: ["--no-sandbox"] }
+      : { args: ["--no-sandbox"] }
+  );
   const page = await browser.newPage();
 
   // Get URL / file path from first argument
