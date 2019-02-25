@@ -10,7 +10,22 @@ const puppeteer = require("puppeteer");
 cli
   .version("1.2.0")
   .option("-p, --path <path>", "The file path to save the PDF to.")
-  .option("-e, --executable <path>", "The path of the chromium executable")
+  .option(
+    "-ep, --executable <path>",
+    "The path of the Chromium executable (useful for running in Docker)"
+  )
+  .option(
+    "-es, --singleProcess",
+    "If Chromium should run in a single process (useful for running in Docker)"
+  )
+  .option(
+    "-en, --noSandbox",
+    "If Chromium should run in a single process (useful for running in Docker)"
+  )
+  .option(
+    "-eh, --headless",
+    "If Chromium should run in a single process (useful for running in Docker)"
+  )
   .option(
     "-s, --scale [scale]",
     "Scale of the webpage rendering.",
@@ -104,10 +119,23 @@ cli
     }
   });
 
+  // Check if we need to add additional argument
+  // (mainly relevant for dockerized installations)
+  let args = [];
+  options.noSandbox ? args.push("--no-sandbox") : null;
+  options.singleProcess ? args.push("--single-process") : null;
+
   const browser = await puppeteer.launch(
     options.executable
-      ? { executablePath: options.executable, args: ["--no-sandbox"] }
-      : { args: ["--no-sandbox"] }
+      ? {
+          executablePath: options.executable,
+          headless: options.headless,
+          args: args
+        }
+      : {
+          headless: options.headless,
+          args: args
+        }
   );
   const page = await browser.newPage();
 
@@ -121,6 +149,5 @@ cli
     console.log(options);
   }
   await page.pdf(options);
-
   await browser.close();
 })();

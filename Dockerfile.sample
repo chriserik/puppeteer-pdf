@@ -1,0 +1,26 @@
+FROM alpine
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
+
+RUN set -x \
+  && apk update \
+  && apk upgrade \
+  && apk add --no-cache \
+  udev \
+  git \
+  ttf-freefont \
+  nodejs \
+  nodejs-npm \
+  chromium \
+  && npm install -g puppeteer-pdf
+
+CMD ["puppeteer-pdf", \
+  "http://www.google.de", \
+  "--executable",\
+  "/usr/bin/chromium-browser", \
+  "--singleProcess",\
+  "--noSandbox", \
+  "--headless",\
+  "--path",\
+  "./sample.pdf" \
+  ]

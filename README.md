@@ -8,6 +8,7 @@ HTML to PDF from the command line with Puppeteer.
 [![npm version](https://img.shields.io/npm/v/puppeteer-pdf.svg)](https://npmjs.org/package/puppeteer-pdf)
 
 ## Help
+
 ```
 puppeteer-pdf --help
   Usage: puppeteer-pdf [options]
@@ -37,6 +38,7 @@ puppeteer-pdf --help
 ```
 
 ## Examples
+
 ```shell
 puppeteer-pdf tests/test.html \
   --path demo.pdf \
@@ -66,5 +68,11 @@ puppeteer-pdf tests/test.html \
   --displayHeaderFooter
 ```
 
+## Running in Docker
+
+Running in Docker is quite straightforward. Please see the sample Dockerfile in this repository for a reference
+of the necessary flags.
+
 ## License
+
 MIT
